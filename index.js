@@ -3,6 +3,20 @@ var _ = require('lodash');
 function isPrimitive(v){
   return _.isString(v) || _.isNumber(v) || _.isBoolean(v);
 }
+
+function isSimple(v){
+  return isPrimitive(v) || _.isNull(v);
+}
+
+function stringValue(v){
+  if(isPrimitive(v)){
+    return JSON.stringify(v);
+  } else if(_.isNull(v)){
+    return "pp::Var::Null";
+  }
+}
+
+
 var uPrefixes = Object.create(null);
 function getUniqueName(prefix){
   if (!uPrefixes[prefix]) {
@@ -19,9 +33,10 @@ function getUniqueName(prefix){
 
 var jsonPepper = function(j, name){
   // base cases: string, number, boolean
-  if(isPrimitive(j)){
-    return _.isString(name) ? 'pp::Var '+ name + "("+JSON.stringify(j)+");" : 'pp::Var('+JSON.stringify(j)+')';
+  if(isSimple(j)){
+    return _.isString(name) ? 'pp::Var '+ name + "("+stringValue(j)+");" : 'pp::Var('+stringValue(j)+')';
   }
+
 
   // if not primitive, force a name.
   name = _.isString(name) ? name : (_.isArray(j) ? getUniqueName('array') : getUniqueName('obj'));
@@ -33,8 +48,8 @@ var jsonPepper = function(j, name){
       var valueJS = j[i];
       var value;
       // if primitive, simplify things a bit.
-      if(isPrimitive(valueJS)){
-        value = JSON.stringify(valueJS);
+      if(isSimple(valueJS)){
+        value = stringValue(valueJS);
       } else {
         // else, give it a name
         var valueName = getUniqueName(name+'_'+i);
@@ -55,8 +70,8 @@ var jsonPepper = function(j, name){
       if(j.hasOwnProperty(key)){
         var valueJS = j[key];
         var value;
-        if(isPrimitive(valueJS)){
-          value = JSON.stringify(valueJS);
+        if(isSimple(valueJS)){
+          value = stringValue(valueJS);
         } else {
           // else, give it a name
           var valueName = getUniqueName(name+'_'+key);
@@ -64,7 +79,7 @@ var jsonPepper = function(j, name){
           value = valueName;
         }
 
-        str += name+'.Set('+JSON.stringify(key)+','+value+');\n';
+        str += name+'.Set('+stringValue(key)+','+value+');\n';
       }
     }
     return str;
