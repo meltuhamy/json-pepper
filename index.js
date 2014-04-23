@@ -12,7 +12,7 @@ function stringValue(v){
   if(isPrimitive(v)){
     return JSON.stringify(v);
   } else if(_.isNull(v)){
-    return "pp::Var::Null";
+    return "pp::Var::Null()";
   }
 }
 
