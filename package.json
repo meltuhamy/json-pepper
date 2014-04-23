@@ -1,0 +1,37 @@
+{
+  "name": "json-pepper",
+  "preferGlobal": true,
+  "version": "0.0.1",
+  "author": "Mohamed Eltuhamy <tuhamy@gmail.com>",
+  "description": "convert json into pp::Var",
+  "contributors": [
+    {
+      "name": "Mohamed Eltuhamy",
+      "email": "tuhamy@gmail.com"
+    }
+  ],
+  "bin": {
+    "json-pepper": "./bin/json-pepper.js"
+  },
+  "main": "index.js",
+  "keywords": [
+    "cli",
+    "json",
+    "nacl",
+    "native-client"
+  ],
+  "dependencies" : {
+    "lodash"   :  "*",
+    "minimist" : "*",
+    "concat-stream" : "*"
+  },
+  "analyze": false,
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/meltuhamy/json-pepper"
+  }
+}
